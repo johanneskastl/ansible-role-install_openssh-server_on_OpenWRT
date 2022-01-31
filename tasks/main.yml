@@ -12,6 +12,9 @@
   changed_when: 'false'
   when: 'ansible_distribution == "OpenWrt"'
 
+#
+# install the openssh-server packages
+#
 - name: 'Install the openssh server packages'
   opkg:
     name: "{{ item }}"
