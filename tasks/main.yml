@@ -1,0 +1,27 @@
+---
+# install_openssh-server_on_OpenWRT/tasks/main.yml
+
+#
+# update opkg cache
+#
+
+- name: 'Run opkg update'
+  raw: '/bin/opkg update'
+  args:
+    executable: '/bin/ash'
+  changed_when: 'false'
+  when: 'ansible_distribution == "OpenWrt"'
+
+- name: 'Install the openssh server packages'
+  opkg:
+    name: "{{ item }}"
+    state: 'installed'
+    update_cache: 'true'
+  with_items:
+    - 'openssh-server'
+    - 'openssh-keygen'
+    - 'openssh-sftp-server'
+  notify:
+    - 'disable the dropbear service'
+    - 'enable the sshd service'
+  when: 'ansible_distribution == "OpenWrt"'
