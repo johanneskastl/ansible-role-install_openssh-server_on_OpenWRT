@@ -33,3 +33,24 @@
     - 'create pub files'
     - 'uninstall dropbearconvert'
   when: 'ansible_distribution == "OpenWrt"'
+
+- name: 'Create the /root/.ssh/ directory'
+  file:
+    path: '/root/.ssh/'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0700'
+  when:
+    - 'ansible_user == "root"'
+
+- name: 'Copy the dropbear authorized_keys to /root/.ssh/'
+  copy:
+    src: '/etc/dropbear/authorized_keys'
+    dest: '/root/.ssh/authorized_keys'
+    remote_src: 'true'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+  when:
+    - 'ansible_user == "root"'
