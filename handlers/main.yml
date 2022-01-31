@@ -12,3 +12,12 @@
     name: 'sshd'
     enabled: 'true'
   when: 'ansible_distribution == "OpenWrt"'
+
+- name: 'delete public host key files'
+  file:
+    name: "/etc/ssh/{{ item }}"
+    state: 'absent'
+  with_items:
+    - 'ssh_host_ed25519_key.pub'
+    - 'ssh_host_rsa_key.pub'
+  when: 'ansible_distribution == "OpenWrt"'
