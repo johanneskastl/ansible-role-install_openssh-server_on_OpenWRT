@@ -28,20 +28,8 @@
     - 'disable the dropbear service'
     - 'enable the sshd service'
     - 'delete public and private host key files'
+    - 'install dropbearconvert'
+    - 'convert dropbear keys to OpenSSH'
+    - 'create pub files'
+    - 'uninstall dropbearconvert'
   when: 'ansible_distribution == "OpenWrt"'
-
-#
-# Configure host keys for sshd
-#
-- name: 'Copy the existing dropbear host keys to avoid warnings'
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    remote_src: 'true'
-    owner: 'root'
-    group: 'root'
-    mode: '0600'
-  with_items:
-    - { src: '/etc/dropbear/dropbear_rsa_host_key', dest: '/etc/ssh/ssh_host_rsa_key'}
-    - { src: '/etc/dropbear/dropbear_ed25519_host_key', dest: '/etc/ssh/ssh_host_ed25519_key'}
-  ignore_errors: "{{ ansible_check_mode }}"
