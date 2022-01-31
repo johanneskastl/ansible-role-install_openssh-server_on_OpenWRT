@@ -1,0 +1,12 @@
+---
+# install_openssh-server_on_OpenWRT/handlers/main.yml
+
+- name: 'disable the dropbear service'
+  service:
+    name: 'dropbear'
+    enabled: 'false'
+
+- name: 'enable the sshd service'
+  service:
+    name: 'sshd'
+    enabled: 'true'
