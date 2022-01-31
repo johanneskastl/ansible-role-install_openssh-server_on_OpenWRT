@@ -27,4 +27,5 @@
   notify:
     - 'disable the dropbear service'
     - 'enable the sshd service'
+    - 'delete public host key files'
   when: 'ansible_distribution == "OpenWrt"'
