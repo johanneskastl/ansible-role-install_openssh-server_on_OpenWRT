@@ -2,6 +2,20 @@
 # install_openssh-server_on_OpenWRT/tasks/main.yml
 
 #
+# safe guard when connection as root user
+#
+- name: 'Check if /etc/dropbear/authorized_keys exists'
+  stat:
+    path: '/etc/dropbear/authorized_keys'
+  register: does_etc_dropbear_authorized_keys_exist
+
+- name: 'Abort if running as root user and there is no authorized_keys file'
+  fail:
+  when:
+    - 'ansible_user == "root"'
+    - 'does_etc_dropbear_authorized_keys_exist.stat.exists == false'
+
+#
 # update opkg cache
 #
 
