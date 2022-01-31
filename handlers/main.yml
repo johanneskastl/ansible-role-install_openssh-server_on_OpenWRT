@@ -23,3 +23,34 @@
     - 'ssh_host_rsa_key'
     - 'ssh_host_rsa_key.pub'
   when: 'ansible_distribution == "OpenWrt"'
+
+- name: 'install dropbearconvert'
+  opkg:
+    name: 'dropbearconvert'
+    state: 'present'
+
+- name: 'convert dropbear keys to OpenSSH'
+  command:
+    cmd: "dropbearconvert dropbear openssh /etc/dropbear/{{ item.dropbearname }} /etc/ssh/{{ item.openssh_name }}"
+  with_items:
+    - dropbearname: 'dropbear_rsa_host_key'
+      openssh_name: 'ssh_host_rsa_key'
+    - dropbearname: 'dropbear_ed25519_host_key'
+      openssh_name: 'ssh_host_ed25519_key'
+
+- name: 'create pub files'
+  shell:
+    cmd: 'dropbearkey -y -f /etc/dropbear/{{ item.dropbearname }} |grep {{ item.string_for_grep }} > /etc/ssh/{{ item.openssh_pub_name }}'
+    creates: "/etc/ssh/{{ item.openssh_pub_name }}"
+  with_items:
+    - dropbearname: 'dropbear_rsa_host_key'
+      openssh_pub_name: 'ssh_host_rsa_key.pub'
+      string_for_grep: 'rsa'
+    - dropbearname: 'dropbear_ed25519_host_key'
+      openssh_pub_name: 'ssh_host_ed25519_key.pub'
+      string_for_grep: 'ed25519'
+
+- name: 'uninstall dropbearconvert'
+  opkg:
+    name: 'dropbearconvert'
+    state: 'absent'
