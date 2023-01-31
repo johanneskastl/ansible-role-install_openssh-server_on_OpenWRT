@@ -2,7 +2,7 @@
 # install_openssh-server_on_OpenWRT/handlers/main.yml
 
 - name: 'disable the dropbear service'
-  service:
+  ansible.builtin.service:
     name: 'dropbear'
     enabled: 'false'
   when:
@@ -10,7 +10,7 @@
     - 'disable_dropbear_service | bool'
 
 - name: 'delete public and private host key files'
-  file:
+  ansible.builtin.file:
     name: "/etc/ssh/{{ item }}"
     state: 'absent'
   with_items:
@@ -22,12 +22,12 @@
     - 'ansible_distribution == "OpenWrt"'
 
 - name: 'install dropbearconvert'
-  opkg:
+  ansible.builtin.package:
     name: 'dropbearconvert'
     state: 'present'
 
 - name: 'convert dropbear keys to OpenSSH'
-  command:
+  ansible.builtin.command:
     cmd: "dropbearconvert dropbear openssh /etc/dropbear/{{ item.dropbearname }} /etc/ssh/{{ item.openssh_name }}"
     creates: "/etc/ssh/{{ item.openssh_name }}"
   with_items:
@@ -37,7 +37,7 @@
       openssh_name: 'ssh_host_ed25519_key'
 
 - name: 'create pub files'
-  shell:
+  ansible.builtin.shell:
     cmd: 'dropbearkey -y -f /etc/dropbear/{{ item.dropbearname }} |grep {{ item.string_for_grep }} > /etc/ssh/{{ item.openssh_pub_name }}'
     creates: "/etc/ssh/{{ item.openssh_pub_name }}"
   with_items:
@@ -49,7 +49,7 @@
       string_for_grep: 'ed25519'
 
 - name: 'uninstall dropbearconvert'
-  opkg:
+  ansible.builtin.package:
     name: 'dropbearconvert'
     state: 'absent'
   when:
