@@ -52,3 +52,5 @@
   opkg:
     name: 'dropbearconvert'
     state: 'absent'
+  when:
+    - 'uninstall_dropbearconvert | bool'
