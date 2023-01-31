@@ -5,7 +5,8 @@
   service:
     name: 'dropbear'
     enabled: 'false'
-  when: 'ansible_distribution == "OpenWrt"'
+  when:
+    - 'ansible_distribution == "OpenWrt"'
 
 - name: 'delete public and private host key files'
   file:
@@ -16,7 +17,8 @@
     - 'ssh_host_ed25519_key.pub'
     - 'ssh_host_rsa_key'
     - 'ssh_host_rsa_key.pub'
-  when: 'ansible_distribution == "OpenWrt"'
+  when:
+    - 'ansible_distribution == "OpenWrt"'
 
 - name: 'install dropbearconvert'
   opkg:
