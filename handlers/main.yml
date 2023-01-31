@@ -29,6 +29,7 @@
 - name: 'convert dropbear keys to OpenSSH'
   command:
     cmd: "dropbearconvert dropbear openssh /etc/dropbear/{{ item.dropbearname }} /etc/ssh/{{ item.openssh_name }}"
+    creates: "/etc/ssh/{{ item.openssh_name }}"
   with_items:
     - dropbearname: 'dropbear_rsa_host_key'
       openssh_name: 'ssh_host_rsa_key'
