@@ -5,12 +5,12 @@
 # safe guard when connection as root user
 #
 - name: 'Check if /etc/dropbear/authorized_keys exists'
-  stat:
+  ansible.builtin.stat:
     path: '/etc/dropbear/authorized_keys'
   register: does_etc_dropbear_authorized_keys_exist
 
 - name: 'Abort if running as root user and there is no authorized_keys file'
-  fail:
+  ansible.builtin.fail:
   when:
     - 'ansible_user == "root"'
     - 'does_etc_dropbear_authorized_keys_exist.stat.exists == false'
@@ -20,7 +20,7 @@
 #
 
 - name: 'Run opkg update'
-  raw: '/bin/opkg update'
+  ansible.builtin.raw: '/bin/opkg update'
   args:
     executable: '/bin/ash'
   changed_when: 'false'
@@ -30,7 +30,7 @@
 # install the openssh-server packages
 #
 - name: 'Install the openssh server packages'
-  opkg:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: 'installed'
     update_cache: 'true'
@@ -48,7 +48,7 @@
   when: 'ansible_distribution == "OpenWrt"'
 
 - name: 'Create the /root/.ssh/ directory'
-  file:
+  ansible.builtin.file:
     path: '/root/.ssh/'
     state: 'directory'
     owner: 'root'
@@ -58,7 +58,7 @@
     - 'ansible_user == "root"'
 
 - name: 'Copy the dropbear authorized_keys to /root/.ssh/'
-  copy:
+  ansible.builtin.copy:
     src: '/etc/dropbear/authorized_keys'
     dest: '/root/.ssh/authorized_keys'
     remote_src: 'true'
@@ -73,14 +73,14 @@
   ansible.builtin.meta: flush_handlers
 
 - name: 'enable the sshd service'
-  service:
+  ansible.builtin.service:
     name: 'sshd'
     enabled: 'true'
   when:
     - 'ansible_distribution == "OpenWrt"'
 
 - name: 'start the sshd service'
-  service:
+  ansible.builtin.service:
     name: 'sshd'
     state: 'started'
   when:
