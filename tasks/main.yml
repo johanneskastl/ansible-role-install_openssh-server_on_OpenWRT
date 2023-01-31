@@ -69,17 +69,17 @@
   when:
     - 'ansible_user == "root"'
 
-- name: 'flush handlers'
+- name: 'Flush handlers'
   ansible.builtin.meta: flush_handlers
 
-- name: 'enable the sshd service'
+- name: 'Enable the sshd service'
   ansible.builtin.service:
     name: 'sshd'
     enabled: 'true'
   when:
     - 'ansible_distribution == "OpenWrt"'
 
-- name: 'start the sshd service'
+- name: 'Start the sshd service'
   ansible.builtin.service:
     name: 'sshd'
     state: 'started'
