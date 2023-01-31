@@ -7,12 +7,6 @@
     enabled: 'false'
   when: 'ansible_distribution == "OpenWrt"'
 
-- name: 'enable the sshd service'
-  service:
-    name: 'sshd'
-    enabled: 'true'
-  when: 'ansible_distribution == "OpenWrt"'
-
 - name: 'delete public and private host key files'
   file:
     name: "/etc/ssh/{{ item }}"
