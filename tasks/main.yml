@@ -13,7 +13,7 @@
   ansible.builtin.fail:
   when:
     - 'ansible_user == "root"'
-    - 'does_etc_dropbear_authorized_keys_exist.stat.exists == false'
+    - 'not does_etc_dropbear_authorized_keys_exist.stat.exists | bool'
 
 #
 # update opkg cache
