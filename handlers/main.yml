@@ -7,6 +7,7 @@
     enabled: 'false'
   when:
     - 'ansible_distribution == "OpenWrt"'
+    - 'disable_dropbear_service | bool'
 
 - name: 'delete public and private host key files'
   file:
