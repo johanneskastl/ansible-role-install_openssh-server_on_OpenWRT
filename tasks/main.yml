@@ -78,3 +78,10 @@
     enabled: 'true'
   when:
     - 'ansible_distribution == "OpenWrt"'
+
+- name: 'start the sshd service'
+  service:
+    name: 'sshd'
+    state: 'started'
+  when:
+    - 'ansible_distribution == "OpenWrt"'
