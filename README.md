@@ -27,7 +27,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-        - { role: 'johanneskastl.install_openssh-server_on_OpenWRT' }
+        - role: 'johanneskastl.install_openssh-server_on_OpenWRT'
 
 License
 -------
