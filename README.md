@@ -1,3 +1,5 @@
+![Ansible Lint](https://github.com/johanneskastl/ansible-role-install_openssh-server_on_OpenWRT/workflows/Ansible%20Lint/badge.svg)
+
 install_openssh-server_on_OpenWRT
 =========
 
